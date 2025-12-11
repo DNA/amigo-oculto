@@ -1,0 +1,11 @@
+#! /usr/bin/env bash
+
+echo "-- Create app/assets/tailwind/ directory"
+mkdir -p   app/assets/tailwind/
+
+echo "-- Download daisyui.mjs"
+curl -Lo   app/assets/tailwind/daisyui.mjs \
+           https://github.com/saadeghi/daisyui/releases/latest/download/daisyui.mjs
+echo "-- Download daisyui-theme.mjs"
+curl -Lo   app/assets/tailwind/daisyui-theme.mjs \
+           https://github.com/saadeghi/daisyui/releases/latest/download/daisyui-theme.mjs
