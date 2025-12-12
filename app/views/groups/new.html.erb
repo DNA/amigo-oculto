@@ -1,0 +1,65 @@
+<div class="hero min-h-screen bg-base-200">
+  <div class="hero-content flex-col w-full max-w-lg">
+    <div class="text-center mb-4">
+      <h1 class="text-5xl font-bold">Create New Group</h1>
+      <p class="py-6">Start your Secret Santa by creating a group</p>
+    </div>
+
+    <div class="card w-full bg-base-100 shadow-2xl">
+      <div class="card-body">
+        <%= form_with model: @group, url: groups_path, data: { turbo: false } do |f| %>
+          <% if @group.errors.any? %>
+            <div role="alert" class="alert alert-error mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h3 class="font-bold">Oops! There were some errors:</h3>
+                <ul class="list-disc list-inside mt-2">
+                  <% @group.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="form-control">
+            <%= f.label :name, class: "label" do %>
+              <span class="label-text text-base font-medium">Group Name</span>
+            <% end %>
+            <%= f.text_field :name,
+                class: "input input-bordered input-lg w-full",
+                placeholder: "e.g., Christmas 2025",
+                autofocus: true %>
+          </div>
+
+          <div class="form-control mt-4">
+            <%= f.label :password, class: "label" do %>
+              <span class="label-text text-base font-medium">Password</span>
+            <% end %>
+            <%= f.password_field :password,
+                class: "input input-bordered input-lg w-full",
+                placeholder: "Minimum 6 characters" %>
+            <label class="label">
+              <span class="label-text-alt">This password will be used to access the group</span>
+            </label>
+          </div>
+
+          <div class="form-control mt-4">
+            <%= f.label :password_confirmation, class: "label" do %>
+              <span class="label-text text-base font-medium">Confirm Password</span>
+            <% end %>
+            <%= f.password_field :password_confirmation,
+                class: "input input-bordered input-lg w-full",
+                placeholder: "Re-enter password" %>
+          </div>
+
+          <div class="form-control mt-8">
+            <%= f.submit "Create Group", class: "btn btn-primary btn-lg w-full text-lg" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

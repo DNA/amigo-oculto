@@ -1,0 +1,129 @@
+<div class="hero min-h-screen bg-base-200">
+  <div class="hero-content flex-col w-full max-w-2xl">
+    <% if notice %>
+      <div role="alert" class="alert alert-success w-full mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span><%= notice %></span>
+      </div>
+    <% end %>
+
+    <div class="text-center mb-4">
+      <h1 class="text-5xl font-bold">🎁 Amigo secreto 🎁</h1>
+      <p class="py-6"><%= @group.name %></p>
+    </div>
+
+    <div class="card w-full bg-base-100 shadow-2xl">
+      <div class="card-body">
+        <div class="text-center py-8">
+          <h2 class="text-2xl font-semibold mb-4">Olá, <%= @person.name %>!</h2>
+
+          <div class="divider"></div>
+
+          <div class="alert alert-info my-8">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div>
+              <h3 class="font-bold text-lg">A pessoa que você sorteou é:</h3>
+            </div>
+          </div>
+
+          <div id="reveal-box" class="bg-primary text-primary-content rounded-box p-8 my-6 cursor-pointer hover:opacity-90 transition-opacity" onclick="toggleReveal()">
+            <div id="covered-state" class="flex items-center justify-center gap-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              <h3 class="text-3xl font-bold">Clique para ver</h3>
+            </div>
+            <div id="revealed-state" class="hidden">
+              <div class="flex items-center justify-center gap-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <h3 class="text-5xl font-bold"><%= @draw.receiver.name %></h3>
+              </div>
+              <p class="text-sm mt-4 opacity-75">Clique novamente para esconder</p>
+            </div>
+          </div>
+
+          <script>
+            function toggleReveal() {
+              const covered = document.getElementById('covered-state');
+              const revealed = document.getElementById('revealed-state');
+
+              if (covered.classList.contains('hidden')) {
+                covered.classList.remove('hidden');
+                revealed.classList.add('hidden');
+              } else {
+                covered.classList.add('hidden');
+                revealed.classList.remove('hidden');
+              }
+            }
+          </script>
+
+          <div class="alert alert-warning">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span>Lembre-se: Mantenha o segredo! Não conte pra ninguém quem você tirou!</span>
+          </div>
+
+          <% if @children_draws.any? %>
+            <div class="divider my-8">Os sorteios dos seus dependentes:</div>
+
+            <% @children_draws.each do |child_draw| %>
+              <div class="card bg-base-200 mb-4">
+                <div class="card-body">
+                  <h3 class="card-title text-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <%= child_draw.giver.name %>
+                  </h3>
+
+                  <div id="child-reveal-box-<%= child_draw.id %>" class="bg-secondary text-secondary-content rounded-box p-6 mt-4 cursor-pointer hover:opacity-90 transition-opacity" onclick="toggleChildReveal(<%= child_draw.id %>)">
+                    <div id="child-covered-state-<%= child_draw.id %>" class="flex items-center justify-center gap-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                      <h4 class="text-2xl font-bold">Clique para ver</h4>
+                    </div>
+                    <div id="child-revealed-state-<%= child_draw.id %>" class="hidden">
+                      <div class="flex items-center justify-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <h4 class="text-3xl font-bold"><%= child_draw.receiver.name %></h4>
+                      </div>
+                      <p class="text-xs mt-2 opacity-75">Clique novamente para esconder</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+
+            <script>
+              function toggleChildReveal(id) {
+                const covered = document.getElementById('child-covered-state-' + id);
+                const revealed = document.getElementById('child-revealed-state-' + id);
+
+                if (covered.classList.contains('hidden')) {
+                  covered.classList.remove('hidden');
+                  revealed.classList.add('hidden');
+                } else {
+                  covered.classList.add('hidden');
+                  revealed.classList.remove('hidden');
+                }
+              }
+            </script>
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

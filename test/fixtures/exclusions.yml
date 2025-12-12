@@ -1,9 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
   group: one
+  person: one
+  excluded_person: one
 
 two:
-  name: MyString
   group: two
+  person: two
+  excluded_person: two

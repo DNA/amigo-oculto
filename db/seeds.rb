@@ -8,20 +8,52 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-leonardo = Person.create! name: "Leonardo"
-michelle =  Person.create! name: "Michelle"
+group = Group.create! name: "Natal 2025", password: "secret123"
 
-aline = Person.create! name: "Aline"
+leonardo = Person.create! name: "Leonardo", group: group
+michelle =  Person.create! name: "Michelle", group: group
 
-davi = Person.create! name: "Davi", parent: aline
-rafa = Person.create! name: "Rafa", parent: aline
-gabriel = Person.create! name: "Gabriel", parent: aline
+aline = Person.create! name: "Aline", group: group
 
-dani = Person.create! name: "Dani"
-luciana = Person.create! name: "Luciana"
-luis = Person.create! name: "Luis"
-diana = Person.create! name: "Diana"
-amir = Person.create! name: "Amir"
-irene = Person.create! name: "irene"
+davi = Person.create! name: "Davi", parent: aline, group: group
+rafa = Person.create! name: "Rafa", parent: aline, group: group
+gabriel = Person.create! name: "Gabriel", parent: aline, group: group
 
-group = Group.new name: "Natal 2025", owner: leonardo
+dani = Person.create! name: "Dani", group: group
+luciana = Person.create! name: "Luciana", group: group
+luis = Person.create! name: "Luis", group: group
+diana = Person.create! name: "Diana", group: group
+almir = Person.create! name: "Amir", group: group
+
+lu_vieira = Person.create! name: "Lu Vieira", group: group
+amanda = Person.create! name: "Amanda", group: group
+malu = Person.create! name: "Malu", group: group
+tales  = Person.create! name: "Tales", group: group
+werverton = Person.create! name: "Werverton", group: group
+
+Person.create! name: "irene", group: group
+
+leonardo.excluded_people << michelle
+michelle.excluded_people << leonardo
+
+aline.excluded_people << [ dani, davi, rafa, gabriel ]
+dani.excluded_people << [ aline, davi, rafa, gabriel ]
+davi.excluded_people << [ aline, dani, rafa, gabriel ]
+rafa.excluded_people << [ aline, dani, davi, gabriel ]
+gabriel.excluded_people << [ aline, dani, davi, rafa ]
+
+luciana.excluded_people << luis
+luis.excluded_people << luciana
+
+diana.excluded_people << almir
+almir.excluded_people << diana
+
+amanda.excluded_people << werverton
+werverton.excluded_people << amanda
+
+diana.excluded_people << almir
+almir.excluded_people << diana
+
+lu_vieira.excluded_people << [ malu, tales ]
+malu.excluded_people << [ lu_vieira, tales ]
+tales.excluded_people << [ lu_vieira, malu ]

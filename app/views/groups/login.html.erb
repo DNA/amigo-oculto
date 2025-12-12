@@ -1,0 +1,45 @@
+<div class="hero min-h-screen bg-base-200">
+  <div class="hero-content flex-col w-full max-w-lg">
+    <div class="text-center mb-4">
+      <h1 class="text-5xl font-bold"><%= @group.name %></h1>
+      <p class="py-6">Enter the group password to continue</p>
+    </div>
+
+    <div class="card w-full bg-base-100 shadow-2xl">
+      <div class="card-body">
+        <%= form_with url: authenticate_group_path(@group), method: :post, data: { turbo: false } do |f| %>
+          <% if flash[:alert] %>
+            <div role="alert" class="alert alert-error mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span><%= flash[:alert] %></span>
+            </div>
+          <% end %>
+
+          <div class="form-control">
+            <%= f.label :password, class: "label" do %>
+              <span class="label-text text-base font-medium">Password</span>
+            <% end %>
+            <%= f.password_field :password,
+                class: "input input-bordered input-lg w-full",
+                placeholder: "Enter group password",
+                autofocus: true,
+                required: true %>
+            <label class="label">
+              <span class="label-text-alt">This password was set when the group was created</span>
+            </label>
+          </div>
+
+          <div class="form-control mt-6">
+            <%= f.submit "Access Group", class: "btn btn-primary btn-lg w-full text-lg" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <%= link_to "Create New Group", new_group_path, class: "link link-primary" %>
+    </div>
+  </div>
+</div>
